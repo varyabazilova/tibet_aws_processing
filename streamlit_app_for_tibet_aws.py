@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import math
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 import io
 from PIL import Image
@@ -81,9 +81,9 @@ def convert_to_float(corrected, exclude_columns=[]):
     return corrected
 
 
-# def making plots as a function
+# examine plotted data - everything gets ploted on one AX
 def plot_selected_columns(df, label_prefix="column", key_prefix=""):
-    """Interactive column selector and plotter for a given dataframe.
+    """Interactive column selector and plotter for a given dataframe using Streamlit's native chart.
 
     Parameters:
     - df: pandas.DataFrame
@@ -94,29 +94,33 @@ def plot_selected_columns(df, label_prefix="column", key_prefix=""):
 
     st.write(f"Select {label_prefix} columns to plot:")
     for col in df.columns:
-        # Use a unique key for each checkbox to avoid state conflicts
         if st.checkbox(f"{label_prefix} '{col}'", value=False, key=f"{key_prefix}_{col}"):
             selected_cols.append(col)
-    
+
     if selected_cols:
-        df_numeric = df[selected_cols].apply(lambda x: pd.to_numeric(x, errors='coerce'))
-
-        with st.container():
-            fig, axs = plt.subplots(len(selected_cols), 1, figsize=(10, 3 * len(selected_cols)), sharex=True)
-
-            if len(selected_cols) == 1:
-                axs = [axs]
-
-            for ax, col in zip(axs, selected_cols):
-                ax.plot(df.index, df_numeric[col])
-                ax.set_title(col)
-                ax.grid(True)
-
-            plt.tight_layout()
-            st.pyplot(fig)
+        df_numeric = df[selected_cols].apply(pd.to_numeric, errors='coerce')
+        st.line_chart(df_numeric)
     else:
         st.info("Please select at least one column to plot.")
 
+
+# # this will be different ax for each plot
+# def plot_selected_columns(df, label_prefix="column", key_prefix=""):
+#     """Plot each selected column separately using Streamlit's native chart."""
+#     selected_cols = []
+
+#     st.write(f"Select {label_prefix} columns to plot:")
+#     for col in df.columns:
+#         if st.checkbox(f"{label_prefix} '{col}'", value=False, key=f"{key_prefix}_{col}"):
+#             selected_cols.append(col)
+
+#     if selected_cols:
+#         for col in selected_cols:
+#             df_numeric = pd.to_numeric(df[col], errors='coerce')
+#             st.write(f"### {col}")
+#             st.line_chart(df_numeric)
+#     else:
+#         st.info("Please select at least one column to plot.")
 
 
 
