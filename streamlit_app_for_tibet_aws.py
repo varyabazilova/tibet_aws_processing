@@ -144,7 +144,8 @@ with col1:
         # df_old = pd.read_csv(old_file)
         df_old = pd.read_csv(old_file)#, skiprows = 1).iloc[2:]
 
-        image_path = '/Users/varyabazilova/Desktop/streamit_things/field_data_processing/yak.png'
+        # image_path = '/Users/varyabazilova/Desktop/streamit_things/field_data_processing/yak.png'
+        image_path ='./yak.png'
         image = Image.open(image_path)
         yak_image = image.resize((284, 206))
         # Display the resized image
@@ -172,7 +173,8 @@ with col2:
 
     if uploaded_file is not None:
         new_data = pd.read_csv(uploaded_file, skiprows = 1).iloc[2:]
-        st.image('/Users/varyabazilova/Desktop/streamit_things/field_data_processing/Tinkerbell magic wand gif.gif', caption="Processing data, renaming columns, doing corrections..",)
+        # st.image('/Users/varyabazilova/Desktop/streamit_things/field_data_processing/Tinkerbell magic wand gif.gif', caption="Processing data, renaming columns, doing corrections..",)
+        st.image('./Tinkerbell magic wand gif.gif', caption="Processing data, renaming columns, doing corrections..",)
 
         new_data_renamed = rename_columns(new_data, column_mapping)
         new_data_renamed_corr = apply_corrections(new_data_renamed)
